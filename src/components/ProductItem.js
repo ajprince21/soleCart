@@ -7,7 +7,7 @@ const ProductItem = ({ product, onAddToCart }) => {
     const handleAddToCart = () => {
         if (quantity > 0) {
             onAddToCart(product, quantity);
-            setQuantity(0); // Reset quantity after adding to cart
+            setQuantity(0);
         }
     };
 
@@ -23,7 +23,7 @@ const ProductItem = ({ product, onAddToCart }) => {
                         <TouchableOpacity onPress={() => setQuantity(quantity - 1)} disabled={quantity === 0} style={styles.quantityButton}>
                             <Text style={styles.quantityButtonText}>-</Text>
                         </TouchableOpacity>
-                        <Text style={styles.quantity}>{quantity}</Text>
+                        <Text  adjustsFontSizeToFit numberOfLines={1} style={styles.quantity}>{quantity}</Text>
                         <TouchableOpacity onPress={() => setQuantity(quantity + 1)} style={styles.quantityButton}>
                             <Text style={styles.quantityButtonText}>+</Text>
                         </TouchableOpacity>
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         paddingHorizontal: 8,
         paddingVertical: 4,
-        marginHorizontal: 4,
+        width:50, alignItems:'center'
     },
     quantityButtonText: {
         fontSize: 20,
@@ -84,6 +84,9 @@ const styles = StyleSheet.create({
     quantity: {
         fontSize: 16,
         color: '#000000',
+        width:70,
+        textAlign:'center',
+        paddingHorizontal:5
     },
     addToCartButton: {
         width: 100,

@@ -1,10 +1,17 @@
-import { StyleSheet, Text, View } from 'react-native'
+import 'react-native-gesture-handler';
 import React from 'react'
-import HomeScreen from './src/screens/HomeScreen'
+import AppNavigator from './src/navigations/AppNavigator'
+import { store } from './src/store';
+import { Provider } from 'react-redux';
+
+
 
 const App = () => {
   return (
-    <HomeScreen />
+    <Provider store={store}>
+      <AppNavigator />
+    </Provider>
+
   )
 }
 
