@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
 import CartScreen from '../screens/CartScreen';
 
@@ -9,9 +9,19 @@ const Stack = createStackNavigator();
 
 function AppStack() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{headerShown:false}}/>
-      <Stack.Screen name='CartScreen' component={CartScreen}  />
+    <Stack.Navigator
+      screenOptions={({ route, navigation }) => ({
+        headerShown: true,
+        gestureEnabled: true,
+        ...TransitionPresets.SlideFromRightIOS,
+      })}
+    >
+      <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+      <Stack.Screen name='CartScreen' component={CartScreen} options={{
+        headerStyle: {
+          backgroundColor: 'green'
+        }
+      }} />
     </Stack.Navigator>
   );
 }
@@ -19,7 +29,7 @@ function AppStack() {
 export default function AppNavigator() {
   return (
     <NavigationContainer>
-        <AppStack/>
+      <AppStack />
     </NavigationContainer>
   );
 }
