@@ -19,8 +19,15 @@ function AppStack() {
       <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
       <Stack.Screen name='CartScreen' component={CartScreen} options={{
         headerStyle: {
-          backgroundColor: 'green'
-        }
+          backgroundColor: 'green',
+        },
+        headerTintColor:'white',
+        headerTitleAlign: 'center',
+        headerTitleStyle:{
+          fontSize: 18,
+          fontWeight: 'bold',
+        },
+        title:'My Cart'
       }} />
     </Stack.Navigator>
   );
