@@ -40,13 +40,7 @@ const HomeScreen = () => {
                     <ProductItem product={item} onAddToCart={addToCart} />
                 )}
                 keyExtractor={(item) => item.id.toString()}
-                contentContainerStyle={{ paddingBottom: 160 }}
             />
-            {/* <View style={styles.cartButtonContainer}>
-                <Pressable style={styles.cartButton} onPress={() => console.log('Go to cart pressed')} android_ripple={{ color: '#808080' }}>
-                    <Text style={styles.cartButtonText}>Go to Cart</Text>
-                </Pressable>
-            </View> */}
         </View>
     );
 };
