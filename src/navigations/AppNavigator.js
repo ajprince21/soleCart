@@ -7,15 +7,16 @@ import HomeScreen from '../screens/HomeScreen';
 import CartScreen from '../screens/CartScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import SplashScreen from '../screens/splash';
 
 
 const Tab = createBottomTabNavigator();
 function HomeTabs() {
   return (
-    <Tab.Navigator 
-    screenOptions={{
-      tabBarActiveTintColor: 'green',
-    }}
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: 'green',
+      }}
     >
       <Tab.Screen
         name="HomeScreen"
@@ -27,9 +28,9 @@ function HomeTabs() {
         }}
 
       />
-      <Tab.Screen 
-        name="ProfileScreen" 
-        component={ProfileScreen} 
+      <Tab.Screen
+        name="ProfileScreen"
+        component={ProfileScreen}
         options={{
           headerShown: false,
           tabBarLabel: 'Profile',
@@ -52,6 +53,7 @@ function AppStack() {
         ...TransitionPresets.SlideFromRightIOS,
       })}
     >
+      <Stack.Screen name='SplashScreen' component={SplashScreen} options={{ headerShown: false }} />
       <Stack.Screen name="BottomTab" component={HomeTabs} options={{ headerShown: false }} />
       <Stack.Screen name='CartScreen' component={CartScreen} options={{
         headerStyle: {
@@ -65,6 +67,7 @@ function AppStack() {
         },
         title: 'My Cart'
       }} />
+      
     </Stack.Navigator>
   );
 }
