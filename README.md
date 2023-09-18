@@ -1,12 +1,27 @@
 # Sole Cart
 
-![Sole Cart Logo](./app/assets/images/logo_round.png)
+![Sole Cart Logo](./src/images/logo_round.png)
 
 Sole Cart is a mobile shopping application that allows users to browse, search for, and purchase footwear products with ease.
 
-## Step 1: Start the Metro Server
+## Prerequisites
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+Before you start, make sure you have the following software installed on your development machine:
+
+- [Node.js](https://nodejs.org/) (LTS version recommended)
+- [npm](https://www.npmjs.com/) (comes with Node.js)
+
+## Step 1: Install Package Dependencies
+
+Before you can start your React Native project, you need to install its package dependencies. To do this, open your terminal and navigate to the root directory of your project:
+
+```bash
+cd path/to/your/react-native/project
+
+
+## Step 2: Start the Metro Server
+
+ Now, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
 
 To start Metro, run the following command from the _root_ of your React Native project:
 
@@ -41,24 +56,3 @@ npm run ios
 # OR using Yarn
 yarn ios
 ```
-
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
-
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
-
-## Step 3: Modifying your App
-
-Now that you have successfully run the app, let's modify it.
-
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
-
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
-
-
-### Prerequisites
-
-Before you start, make sure you have the following software installed on your development machine:
-
-- [Node.js](https://nodejs.org/) (LTS version recommended)
-- [npm](https://www.npmjs.com/) (comes with Node.js)
