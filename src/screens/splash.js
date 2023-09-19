@@ -1,15 +1,35 @@
 import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SplashScreen = () => {
     const navigation = useNavigation();
 
     useEffect(() => {
-        setTimeout(() => {
-            navigation.replace('BottomTab');
-        }, 3000);
+        checkUserData();
     }, []);
+
+    const checkUserData = async () => {
+        try {
+            // Retrieve the JSON string from AsyncStorage using the key
+            const userDataJSON = await AsyncStorage.getItem('userData');
+
+            // If user data is found, navigate to the BottomTab screen
+            if (userDataJSON) {
+                setTimeout(() => {
+                    navigation.replace('BottomTab');
+                }, 3000);
+
+            } else {
+                setTimeout(() => {
+                    navigation.replace('LoginScreen');
+                }, 3000);
+            }
+        } catch (error) {
+            console.error('Error checking user data:', error);
+        }
+    };
 
     return (
         <View style={styles.container}>
@@ -20,7 +40,7 @@ const SplashScreen = () => {
     );
 }
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     container: {

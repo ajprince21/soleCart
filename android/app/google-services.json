@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "589778318663",
+    "project_id": "solecart-e189f",
+    "storage_bucket": "solecart-e189f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:589778318663:android:2f5dfcd34c074c41e48862",
+        "android_client_info": {
+          "package_name": "com.solecart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt-teo235oVWU8_bRvC1-M7VyteleMess"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

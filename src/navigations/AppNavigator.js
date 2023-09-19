@@ -8,6 +8,8 @@ import CartScreen from '../screens/CartScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SplashScreen from '../screens/splash';
+import LoginScreen from '../screens/LoginScreen';
+import SignupScreen from '../screens/SignupScreen';
 
 
 const Tab = createBottomTabNavigator();
@@ -55,6 +57,8 @@ function AppStack() {
     >
       <Stack.Screen name='SplashScreen' component={SplashScreen} options={{ headerShown: false }} />
       <Stack.Screen name="BottomTab" component={HomeTabs} options={{ headerShown: false }} />
+      <Stack.Screen name='LoginScreen' component={LoginScreen} options={{ headerShown: false }} />
+      <Stack.Screen name='SignupScreen' component={SignupScreen} options={{ headerShown: false }} />
       <Stack.Screen name='CartScreen' component={CartScreen} options={{
         headerStyle: {
           backgroundColor: 'green',
@@ -67,7 +71,7 @@ function AppStack() {
         },
         title: 'My Cart'
       }} />
-      
+
     </Stack.Navigator>
   );
 }

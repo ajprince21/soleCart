@@ -17,21 +17,32 @@ const ProductItem = ({ product, onAddToCart }) => {
             <View style={styles.details}>
                 <Text style={styles.name}>{product.name}</Text>
                 <Text style={styles.brand}>{product.brand}</Text>
-                <Text style={styles.price}>₹ {product.price}</Text>
-                {quantity > 0
-                    ? <View style={styles.quantityContainer}>
-                        <TouchableOpacity onPress={() => setQuantity(quantity - 1)} disabled={quantity === 0} style={styles.quantityButton}>
+                <View style={styles.priceContainer}>
+                    <Text style={product.discountedPrice !== null ? styles.originalPrice : styles.discountedPrice}>₹ {product.price}</Text>
+                    {product.discountedPrice !== null && (
+                        <Text style={styles.discountedPrice}>₹ {product.discountedPrice}</Text>
+                    )}
+                </View>
+                {quantity > 0 ? (
+                    <View style={styles.quantityContainer}>
+                        <TouchableOpacity
+                            onPress={() => setQuantity(quantity - 1)}
+                            disabled={quantity === 0}
+                            style={styles.quantityButton}>
                             <Text style={styles.quantityButtonText}>-</Text>
                         </TouchableOpacity>
-                        <Text  adjustsFontSizeToFit numberOfLines={1} style={styles.quantity}>{quantity}</Text>
+                        <Text adjustsFontSizeToFit numberOfLines={1} style={styles.quantity}>
+                            {quantity}
+                        </Text>
                         <TouchableOpacity onPress={() => setQuantity(quantity + 1)} style={styles.quantityButton}>
                             <Text style={styles.quantityButtonText}>+</Text>
                         </TouchableOpacity>
                     </View>
-                    : <TouchableOpacity onPress={handleAddToCart} style={styles.addToCartButton}>
+                ) : (
+                    <TouchableOpacity onPress={handleAddToCart} style={styles.addToCartButton}>
                         <Text style={styles.addToCartButtonText}>Add to Cart</Text>
                     </TouchableOpacity>
-                }
+                )}
             </View>
         </View>
     );
@@ -63,7 +74,16 @@ const styles = StyleSheet.create({
     brand: {
         color: '#808080',
     },
-    price: {
+    priceContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    originalPrice: {
+        color: '#808080',
+        textDecorationLine: 'line-through',
+        marginRight: 5,
+    },
+    discountedPrice: {
         color: 'green',
     },
     quantityContainer: {
@@ -75,7 +95,8 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         paddingHorizontal: 8,
         paddingVertical: 4,
-        width:50, alignItems:'center'
+        width: 50,
+        alignItems: 'center',
     },
     quantityButtonText: {
         fontSize: 20,
@@ -84,9 +105,9 @@ const styles = StyleSheet.create({
     quantity: {
         fontSize: 16,
         color: '#000000',
-        width:70,
-        textAlign:'center',
-        paddingHorizontal:5
+        width: 70,
+        textAlign: 'center',
+        paddingHorizontal: 5,
     },
     addToCartButton: {
         width: 100,
