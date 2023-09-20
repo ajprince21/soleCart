@@ -30,7 +30,6 @@ const HomeScreen = () => {
     return (
         <View style={styles.container}>
             <StatusBar
-                backgroundColor="green" 
                 barStyle="light-content" 
             />
             <ProductHeader />

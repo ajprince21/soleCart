@@ -1,118 +1,102 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Button } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
-import storage from '@react-native-firebase/storage';
-import { utils } from '@react-native-firebase/app';
-import { useSelector } from 'react-redux';
-import products from '../global/data';
-import notifee, { AndroidStyle } from '@notifee/react-native';
+import { View, Text, Image, TouchableOpacity, ScrollView, StatusBar } from 'react-native';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { Icon } from '@rneui/base';
+import { removeUserData } from '../global/asyncStorage';
 
-
-const ProfileScreen = () => {
-
-
-
-  const storeProductsInFirestore = async () => {
-    try {
-      const batch = firestore().batch();
-
-      products.forEach(async (product) => {
-        const { image, ...productData } = product;
-
-        try {
-          // Get the local image file path
-          const imagePath = image;
-          console.log('1 imagePath', imagePath)
-          // Create a reference for the image in Firebase Storage
-          const imageRef = storage().ref(`product_images/${product.id}.jpg`);
-          console.log('1 imageRef', imageRef)
-          // Upload the image from the local file path to Firebase Storage
-          const pathToFile = `${utils.FilePath.PICTURES_DIRECTORY}/product_images/${product.id}.jpg`;
-          await imageRef.putFile(pathToFile);
-
-          // Get the download URL of the uploaded image
-          const imageUrl = await imageRef.getDownloadURL();
-
-          // Add the image URL to the product data
-          productData.image = imageUrl;
-
-          const productRef = firestore().collection('products').doc(product.id.toString());
-
-          // Set the product data (including the image URL) in Firestore
-          batch.set(productRef, productData);
-        } catch (imageUploadError) {
-          console.error('Error uploading image:', imageUploadError);
-        }
-      });
-
-
-
-      // Commit the batch write
-      await batch.commit();
-      console.log('Products (with images) stored in Firestore successfully');
-    } catch (error) {
-      console.error('Error storing products (with images) in Firestore:', error);
-    }
+const ProfileScreen = ({ navigation }) => {
+  const navigateToAddProduct = () => {
+    navigation.navigate('AddProductScreen');
   };
 
-
-  const onDisplayNotification = async () => {
-    // Request permissions (required for iOS)
-    await notifee.requestPermission()
-
-    // Create a channel (required for Android)
-    const channelId = await notifee.createChannel({
-      id: 'default',
-      name: 'Default Channel',
-    });
-
-    // Display a notification
-    await notifee.displayNotification({
-      title: 'Sale is LIVE',
-      body: 'Hurry up to get SALE deals..',
-      android: {
-        channelId,
-        // smallIcon: 'name-of-a-small-icon', 
-        style: { type: AndroidStyle.BIGPICTURE, picture: 'https://picsum.photos/seed/picsum/200/300' },
-        timestamp: Date.now() + 300000,
-        showTimestamp: true,
-        chronometerDirection: 'down',
-        showChronometer: true,
-        // pressAction is needed if you want the notification to open the app when pressed
-        pressAction: {
-          id: 'default',
-        },
-      },
-    });
-  }
-
   return (
-    <View style={styles.container}>
-      <Text>ProfileScreen</Text>
-      {/* <TouchableOpacity style={styles.addButton} onPress={storeProductsInFirestore}>
-        <Text style={styles.buttonText}>Store Products in Firestore</Text>
-      </TouchableOpacity> */}
-      <Button title="Display Notification" onPress={() => onDisplayNotification()} />
-    </View>
+    <ScrollView contentContainerStyle={styles.container}>
+      <StatusBar barStyle="dark-content" />
+      <View style={{ marginLeft: 'auto' }}>
+        <Icon
+          raised
+          name='logout'
+          type='MaterialIcons'
+          color='#f50'
+          onPress={() => removeUserData()}
+
+        />
+      </View>
+      <View style={styles.profileContainer}>
+        <Image
+          style={styles.profileImage}
+          source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }}
+        />
+        <Text style={styles.userName}>John Doe</Text>
+        <Text style={styles.userEmail}>john.doe@example.com</Text>
+        <Text style={styles.userMobile}>Mobile: +1 (123) 456-7890</Text>
+      </View>
+      <View>
+        <TouchableOpacity
+          onPress={navigateToAddProduct}
+          style={styles.addProductButton}
+        >
+          <Text style={styles.addProductButtonText}>Add Products</Text>
+          <FontAwesome name="angle-right" size={20} color="#fff" />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.addProductButton, {backgroundColor:'grey'}]}
+        >
+          <Text style={styles.addProductButtonText}>Update Products</Text>
+          <FontAwesome name="angle-right" size={20} color="#fff" />
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = {
   container: {
     flex: 1,
-    justifyContent: 'center',
+    padding: 20,
+    backgroundColor: '#ffffff',
+  },
+  profileContainer: {
     alignItems: 'center',
+    marginBottom: 20,
   },
-  addButton: {
-    backgroundColor: 'green',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
+  profileImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 75,
   },
-  buttonText: {
-    color: 'white',
+  userName: {
+    fontSize: 24,
     fontWeight: 'bold',
+    marginTop: 10,
   },
-});
+  userEmail: {
+    fontSize: 16,
+    marginTop: 5,
+  },
+  userMobile: {
+    fontSize: 16,
+    marginTop: 5,
+  },
+  addProductButton: {
+    flexDirection: 'row',
+    backgroundColor: 'tomato',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    alignItems: 'center',
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 2 },
+    marginVertical:10
+  },
+  addProductButtonText: {
+    fontSize: 16,
+    color: '#fff',
+    fontWeight: 'bold',
+    marginRight: 10,
+  },
+};
 
 export default ProfileScreen;
