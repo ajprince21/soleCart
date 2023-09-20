@@ -18,7 +18,10 @@ const ProfileScreen = ({ navigation }) => {
           name='logout'
           type='MaterialIcons'
           color='#f50'
-          onPress={() => removeUserData()}
+          onPress={() => {
+            removeUserData()
+            navigation.replace('LoginScreen')
+          }}
 
         />
       </View>
