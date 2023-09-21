@@ -6,6 +6,9 @@ import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/storage';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import notifee from '@notifee/react-native';
+import { displayNotification } from '../global/notificationUtils';
+import Loading from '../components/Loading';
 
 const AddProductScreen = () => {
     const [product, setProduct] = useState({
@@ -23,6 +26,7 @@ const AddProductScreen = () => {
         createdDate: new Date().toISOString(),
         updatedDate: new Date().toISOString(),
     });
+    const [isLoading, setLoading] = useState(false)
 
     const selectImage = (fromCamera) => {
         const options = {
@@ -58,39 +62,48 @@ const AddProductScreen = () => {
     };
 
     const handleAddProduct = async () => {
+        setLoading(true);
         try {
-          const id = uuid.v4();
-          
-          // Create a reference to the Firebase Storage bucket
-          const storageRef = firebase.storage().ref();
-          
-          // Create a reference to the image file with the product's ID
-          const imageRef = storageRef.child(`images/${id}.jpg`);
-          
-          // Convert the image URI to a blob
-          const response = await fetch(product.image);
-          const blob = await response.blob();
-          
-          // Upload the blob to Firebase Storage
-          await imageRef.put(blob);
-      
-          // Get the download URL of the uploaded image
-          const imageUrl = await imageRef.getDownloadURL();
-      
-          // Update the product's image URL
-          product.image = imageUrl;
-      
-          // Update the product in Firestore
-          const productRef = firestore().collection('products').doc(product.id);
-          await productRef.update({ image: imageUrl });
-      
-          Alert.alert('Product image updated successfully');
-          // You can navigate to another screen or reset the form here
+            const id = uuid.v4();
+
+            // Create a reference to the Firebase Storage bucket
+            const storageRef = firebase.storage().ref();
+
+            // Create a reference to the image file with the product's ID
+            const imageRef = storageRef.child(`/soleCart/productImages/${id}.jpg`);
+
+            // Convert the image URI to a blob
+            const response = await fetch(product.image);
+            const blob = await response.blob();
+
+            // Upload the blob to Firebase Storage
+            await imageRef.put(blob);
+
+            // Get the download URL of the uploaded image
+            const imageUrl = await imageRef.getDownloadURL();
+
+            // Update the product's image URL
+            product.image = imageUrl;
+
+            // Update the product in Firestore
+            await firestore()
+                .collection('products')
+                .doc(id)
+                .set(product)
+                .then(() => {
+                    Alert.alert('Product added successfully');
+                    displayNotification('Product Added Sucessfully', `${product.name}`)
+                    setLoading(false);
+                })
+
+
+            // You can navigate to another screen or reset the form here
         } catch (error) {
-          console.error('Error updating product image:', error);
-          Alert.alert('Failed to update product image');
+            setLoading(false);
+            console.error('Error adding  product :', error);
+            Alert.alert('Failed to add product');
         }
-      };
+    };
 
     return (
         <ScrollView>
@@ -229,7 +242,12 @@ const AddProductScreen = () => {
                         }}
                     />
                 </View>
+
+
             </View>
+
+            <Loading visible={isLoading} />
+
         </ScrollView>
     );
 };
