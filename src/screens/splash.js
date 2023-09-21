@@ -2,9 +2,13 @@ import React, { useEffect } from 'react';
 import { View, Text, Image, StyleSheet, Dimensions, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserData } from '../global/asyncStorage';
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../store/slice/AuthSlice';
 
 const SplashScreen = () => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         checkUserData();
@@ -12,12 +16,12 @@ const SplashScreen = () => {
 
     const checkUserData = async () => {
         try {
-            // Retrieve the JSON string from AsyncStorage using the key
-            const userDataJSON = await AsyncStorage.getItem('userData');
+            const userDataJSON = await getUserData()
 
             // If user data is found, navigate to the BottomTab screen
             if (userDataJSON) {
                 setTimeout(() => {
+                    dispatch(setUserData(userDataJSON))
                     navigation.replace('BottomTab');
                 }, 3000);
 

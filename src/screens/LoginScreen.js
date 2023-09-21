@@ -3,8 +3,11 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet, Alert } from 'react-native';
 import firestore, { Filter } from '@react-native-firebase/firestore';
 import { storeUserData } from '../global/asyncStorage';
+import { useDispatch } from 'react-redux';
+import { setUserData } from '../store/slice/AuthSlice';
 
 const LoginScreen = () => {
+    const dispatch = useDispatch();
     const navigation = useNavigation();
     const [emailOrMobile, setEmailOrMobile] = useState('');
     const [password, setPassword] = useState('');
@@ -31,7 +34,8 @@ const LoginScreen = () => {
             if (querySnapshot.size > 0) {
                 const userData = querySnapshot.docs[0].data();
                 storeUserData(userData);
-                navigation.replace('BottomTab')
+                navigation.replace('BottomTab');
+                dispatch(setUserData(userData));
 
             } else {
                 Alert.alert('User not found or credentials are incorrect')

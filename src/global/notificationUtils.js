@@ -8,7 +8,7 @@ export async function displayNotification(title, body, channelId = 'default', sm
         // Create a channel (required for Android)
         await notifee.createChannel({
             id: channelId,
-            name: 'Default Channel', // You can customize the channel name here
+            name: 'Default Channel', 
         });
 
         // Display a notification

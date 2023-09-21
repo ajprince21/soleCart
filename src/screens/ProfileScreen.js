@@ -3,8 +3,13 @@ import { View, Text, Image, TouchableOpacity, ScrollView, StatusBar } from 'reac
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Icon } from '@rneui/base';
 import { removeUserData } from '../global/asyncStorage';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteUserData } from '../store/slice/AuthSlice';
 
 const ProfileScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.auth.userData)
+  console.log('User Data', userData);
   const navigateToAddProduct = () => {
     navigation.navigate('AddProductScreen');
   };
@@ -21,20 +26,24 @@ const ProfileScreen = ({ navigation }) => {
           onPress={() => {
             removeUserData()
             navigation.replace('LoginScreen')
+            dispatch(deleteUserData());
           }}
 
         />
       </View>
-      <View style={styles.profileContainer}>
-        <Image
-          style={styles.profileImage}
-          source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }}
-        />
-        <Text style={styles.userName}>John Doe</Text>
-        <Text style={styles.userEmail}>john.doe@example.com</Text>
-        <Text style={styles.userMobile}>Mobile: +1 (123) 456-7890</Text>
-      </View>
+      {userData &&
+        <View style={styles.profileContainer}>
+          <Image
+            style={styles.profileImage}
+            source={{ uri: 'https://picsum.photos/seed/picsum/200/300' }}
+          />
+          <Text style={styles.userName}>{userData.name}</Text>
+          <Text style={styles.userEmail}>{userData.email}</Text>
+          <Text style={styles.userMobile}>Mobile: +91 {userData.phone_number}</Text>
+        </View>
+      }
       <View>
+        <Text style={{textAlign: 'center'}}>Admin Section only</Text>
         <TouchableOpacity
           onPress={navigateToAddProduct}
           style={styles.addProductButton}
@@ -43,7 +52,7 @@ const ProfileScreen = ({ navigation }) => {
           <FontAwesome name="angle-right" size={20} color="#fff" />
         </TouchableOpacity>
         <TouchableOpacity
-          style={[styles.addProductButton, {backgroundColor:'grey'}]}
+          style={[styles.addProductButton, { backgroundColor: 'grey' }]}
         >
           <Text style={styles.addProductButtonText}>Update Products</Text>
           <FontAwesome name="angle-right" size={20} color="#fff" />
@@ -92,7 +101,7 @@ const styles = {
     shadowColor: '#000',
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
-    marginVertical:10
+    marginVertical: 10
   },
   addProductButtonText: {
     fontSize: 16,
